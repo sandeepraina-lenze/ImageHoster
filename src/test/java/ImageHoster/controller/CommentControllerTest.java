@@ -1,6 +1,5 @@
 package ImageHoster.controller;
 
-
 import ImageHoster.model.Image;
 import ImageHoster.model.User;
 import ImageHoster.model.UserProfile;

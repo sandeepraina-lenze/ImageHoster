@@ -126,7 +126,7 @@ public class ImageController {
 
     //The method also receives tags parameter which is a string of all the tags separated by a comma using the annotation @RequestParam
     //The method converts the string to a list of all the tags using findOrCreateTags() method and sets the tags attribute of an image as a list of all the tags
-    @RequestMapping(value = "/editImage", method = RequestMethod.PUT)
+    @RequestMapping(value = "/editImage", method = RequestMethod.POST)
     public String editImageSubmit(@RequestParam("file") MultipartFile file, @RequestParam("imageId") Integer imageId, @RequestParam("tags") String tags, Image updatedImage, HttpSession session) throws IOException {
 
         Image image = imageService.getImage(imageId);
@@ -146,7 +146,7 @@ public class ImageController {
         updatedImage.setDate(new Date());
 
         imageService.updateImage(updatedImage);
-        return "redirect:/images/" + updatedImage.getTitle();
+        return "redirect:/images/" + updatedImage.getId() + "/" + updatedImage.getTitle();
     }
 
     //This controller method is called when the request pattern is of type 'deleteImage' and also the incoming request is of DELETE type

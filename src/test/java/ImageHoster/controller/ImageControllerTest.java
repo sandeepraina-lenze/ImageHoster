@@ -14,12 +14,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.awt.*;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
