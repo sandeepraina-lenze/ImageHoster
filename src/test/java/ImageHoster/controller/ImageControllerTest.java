@@ -1,9 +1,7 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.*;
 import ImageHoster.model.Image;
-import ImageHoster.model.Tag;
-import ImageHoster.model.User;
-import ImageHoster.model.UserProfile;
 import ImageHoster.service.ImageService;
 import ImageHoster.service.TagService;
 import org.junit.jupiter.api.Test;
@@ -11,11 +9,17 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -304,5 +308,38 @@ public class ImageControllerTest {
                 .param("imageId", "1")
                 .session(session))
                 .andExpect(model().attribute("deleteError", "Only the owner of the image can delete the image"));
+    }
+
+    //This test checks the controller logic when the owner of the image sends the CreateImage request to post the new image and checks whether the logic returns the html file 'images.html'
+    @Test
+    public void createImage() throws Exception {
+        User user = new User();
+        UserProfile userProfile = new UserProfile();
+        userProfile.setId(1);
+        userProfile.setEmailAddress("a@gmail.com");
+        userProfile.setFullName("Abhi Mahajan");
+        userProfile.setMobileNumber("9876543210");
+        user.setProfile(userProfile);
+        user.setId(1);
+        user.setUsername("Abhi");
+        user.setPassword("password1@");
+
+        session = new MockHttpSession();
+        session.setAttribute("loggeduser", user);
+
+        Image image = new Image();
+        image.setId(1);
+        image.setTitle("new");
+        image.setDescription("This image is for testing purpose");
+
+        File getImageFile = new File("src/test/resources/Unit-Test/Dr. Strange.jpg");
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", getImageFile.getAbsolutePath(), MediaType.TEXT_PLAIN_VALUE, getImageFile.getAbsolutePath().getBytes());
+
+        this.mockMvc.perform(multipart("/images/upload")
+                .file(mockMultipartFile)
+                .param("tags", "Marvel,Dr. Strange")
+                .flashAttr("image", image)
+                .session(session))
+                .andExpect(redirectedUrl("/images"));
     }
 }
