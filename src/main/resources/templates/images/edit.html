@@ -7,7 +7,7 @@
 
 <h1>Edit Image</h1>
 
-<form th:method="put" th:action="@{/editImage(imageId=${image.id})}" enctype="multipart/form-data">
+<form th:method="post" th:action="@{/editImage(imageId=${image.id})}" enctype="multipart/form-data">
 
     <div>Image Title :</div>
     <div>
